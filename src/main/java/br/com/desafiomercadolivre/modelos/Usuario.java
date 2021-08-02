@@ -16,6 +16,7 @@ public class Usuario {
 
     @NotBlank(message = "É necessário preencher login.")
     @Email
+    @Column(unique = true)
     private String login;
 
     @NotBlank(message = "É necessário uma senha.")
@@ -34,7 +35,5 @@ public class Usuario {
         this.senha = senha;
         this.dataCadastro = LocalDateTime.now();
     }
-
-
 
 }

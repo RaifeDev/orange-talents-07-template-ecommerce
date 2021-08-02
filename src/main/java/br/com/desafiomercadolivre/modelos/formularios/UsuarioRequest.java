@@ -1,6 +1,8 @@
 package br.com.desafiomercadolivre.modelos.formularios;
 
+import br.com.desafiomercadolivre.annotations.CampoUnico;
 import br.com.desafiomercadolivre.modelos.Usuario;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -9,6 +11,7 @@ import javax.validation.constraints.Size;
 public class UsuarioRequest {
 
     @NotBlank(message = "É necessário preencher login.")
+    @CampoUnico(fieldName = "login", domainClass = Usuario.class, message = "Já existe um email cadastrado com este endereço.")
     @Email
     private String login;
 
@@ -23,6 +26,6 @@ public class UsuarioRequest {
 
 
     public Usuario converterParaUsuario() {
-        return new Usuario(login, senha);
+        return new Usuario(login, new BCryptPasswordEncoder().encode(senha));
     }
 }
