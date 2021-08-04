@@ -1,0 +1,3 @@
+
+
+INSERT INTO TB_USUARIOS (id, login, senha) values(null, 'joao.gomes@gmail.com', '$2a$10$d7.sc9IhUCm7X3BUNsQ4KeJnZpGmJKFyAbnFTaml0VGM6QBXtYLtW');

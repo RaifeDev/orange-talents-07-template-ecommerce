@@ -15,7 +15,7 @@ public class CategoriaRequest {
     private String nome;
 
     @Positive
-    @IdExiste(domainClass = Categoria.class, fieldName = "id", allowNull = true)
+    @IdExiste(domainClass = Categoria.class, fieldName = "id", allowNull = true, message = "Id Categoria Mãe, não existe")
     private Long categoriaId;
 
     public CategoriaRequest(String nome, Long categoriaId) {
