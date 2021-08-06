@@ -1,7 +1,6 @@
 package br.com.desafiomercadolivre.annotations;
 
 
-import br.com.desafiomercadolivre.annotations.implementacoes.CampoUnicoImplementacao;
 import br.com.desafiomercadolivre.annotations.implementacoes.IdExisteImplementacao;
 
 import javax.validation.Constraint;

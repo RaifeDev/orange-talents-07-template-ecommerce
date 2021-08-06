@@ -1,6 +1,5 @@
 package br.com.desafiomercadolivre.annotations.implementacoes;
 
-import br.com.desafiomercadolivre.annotations.CampoUnico;
 import br.com.desafiomercadolivre.annotations.IdExiste;
 
 import javax.persistence.EntityManager;
