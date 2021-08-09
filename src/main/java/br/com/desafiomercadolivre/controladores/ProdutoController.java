@@ -8,6 +8,7 @@ import br.com.desafiomercadolivre.modelos.formularios.ImagemProdutoRequest;
 import br.com.desafiomercadolivre.modelos.formularios.OpiniaoRequest;
 import br.com.desafiomercadolivre.modelos.formularios.PerguntaRequest;
 import br.com.desafiomercadolivre.modelos.formularios.ProdutoRequest;
+import br.com.desafiomercadolivre.modelos.respostas.DetalhesDoProdutoResponse;
 import br.com.desafiomercadolivre.repositorios.*;
 import br.com.desafiomercadolivre.utils.UploaderSimulador;
 import br.com.desafiomercadolivre.utils.mail.ServicoDeEmail;
@@ -94,6 +95,18 @@ public class ProdutoController {
         perguntaRepository.save(pergunta);
         servicoDeEmail.enviarEmail(pergunta, produto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("{idProduto}")
+    public ResponseEntity<?> detalharProdutoPorId(@PathVariable("idProduto") Long id){
+
+        Optional<Produto> produto = produtoRepository.findById(id);
+
+        if(produto.isEmpty())
+            return ResponseEntity.badRequest().build();
+
+
+        return  ResponseEntity.ok().body(new DetalhesDoProdutoResponse(produto.get()));
     }
 
 

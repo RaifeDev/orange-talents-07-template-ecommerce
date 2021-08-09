@@ -51,6 +51,12 @@ public class Produto {
     @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
     private List<ImagemProduto> imagensDoProduto = new ArrayList<>();
 
+    @OneToMany(mappedBy = "produto")
+    private List<Opiniao> opinioes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "produtoRelacionado")
+    private List<Pergunta> perguntas = new ArrayList<>();
+
     @Deprecated
     public Produto(){
 
@@ -75,6 +81,42 @@ public class Produto {
 
     public String getNome() {
         return nome;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public Integer getQuantidadeDisponivel() {
+        return quantidadeDisponivel;
+    }
+
+    public Set<CaracteristicaProduto> getCaracteristicas() {
+        return caracteristicas;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public List<ImagemProduto> getImagensDoProduto() {
+        return imagensDoProduto;
+    }
+
+    public List<Opiniao> getOpinioes() {
+        return opinioes;
+    }
+
+    public List<Pergunta> getPerguntas() {
+        return perguntas;
     }
 
     public void associaImagens(List<String> urls){

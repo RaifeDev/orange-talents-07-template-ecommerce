@@ -38,6 +38,14 @@ public class Pergunta {
         this.produtoRelacionado = produtoRelacionado;
     }
 
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
     public Usuario getUsuario() {
         return usuario;
     }
