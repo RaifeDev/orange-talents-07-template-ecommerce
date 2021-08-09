@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_usuarios")
@@ -49,6 +50,10 @@ public class Usuario implements UserDetails {
         return null;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     @Override
     public String getPassword() {
         return this.senha;
@@ -80,5 +85,16 @@ public class Usuario implements UserDetails {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(id, usuario.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

@@ -4,6 +4,7 @@ import br.com.desafiomercadolivre.annotations.IdExiste;
 import br.com.desafiomercadolivre.modelos.CaracteristicaProduto;
 import br.com.desafiomercadolivre.modelos.Categoria;
 import br.com.desafiomercadolivre.modelos.Produto;
+import br.com.desafiomercadolivre.modelos.Usuario;
 import br.com.desafiomercadolivre.repositorios.CategoriaRepository;
 
 import javax.persistence.CascadeType;
@@ -39,7 +40,7 @@ public class ProdutoRequest {
     private Long categoria;
 
 
-    public Produto converterParaProduto(CategoriaRepository categoriaRepository) {
+    public Produto converterParaProduto(CategoriaRepository categoriaRepository, Usuario usuario) {
 
         Categoria categoria = categoriaRepository.getById(this.categoria);
         Set<CaracteristicaProduto> caracteristicas = new HashSet<>();
@@ -48,7 +49,7 @@ public class ProdutoRequest {
             caracteristicas.add(new CaracteristicaProduto(caracteritica.getNome(), caracteritica.getDescricao()));
         });
 
-        return new Produto(nome, valor, quantidadeDisponivel, caracteristicas, descricao, categoria);
+        return new Produto(nome, valor, quantidadeDisponivel, caracteristicas, descricao, categoria, usuario);
 
     }
 
@@ -76,15 +77,4 @@ public class ProdutoRequest {
         return categoria;
     }
 
-    @Override
-    public String toString() {
-        return "ProdutoRequest{" +
-                "nome='" + nome + '\'' +
-                ", valor=" + valor +
-                ", quantidadeDisponivel=" + quantidadeDisponivel +
-                ", caracteristicas=" + caracteristicas +
-                ", descricao='" + descricao + '\'' +
-                ", categoria=" + categoria +
-                '}';
-    }
 }
