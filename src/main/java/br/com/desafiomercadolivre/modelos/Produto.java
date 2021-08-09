@@ -73,6 +73,10 @@ public class Produto {
         return usuarioProprietario;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
     public void associaImagens(List<String> urls){
         List<ImagemProduto> imagens = urls.stream().map(url ->
             new ImagemProduto(url, this)

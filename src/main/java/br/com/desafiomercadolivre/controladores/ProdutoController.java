@@ -1,16 +1,16 @@
 package br.com.desafiomercadolivre.controladores;
 
 import br.com.desafiomercadolivre.modelos.Opiniao;
+import br.com.desafiomercadolivre.modelos.Pergunta;
 import br.com.desafiomercadolivre.modelos.Produto;
 import br.com.desafiomercadolivre.modelos.Usuario;
 import br.com.desafiomercadolivre.modelos.formularios.ImagemProdutoRequest;
 import br.com.desafiomercadolivre.modelos.formularios.OpiniaoRequest;
+import br.com.desafiomercadolivre.modelos.formularios.PerguntaRequest;
 import br.com.desafiomercadolivre.modelos.formularios.ProdutoRequest;
-import br.com.desafiomercadolivre.repositorios.CategoriaRepository;
-import br.com.desafiomercadolivre.repositorios.OpiniaoRepository;
-import br.com.desafiomercadolivre.repositorios.ProdutoRepository;
-import br.com.desafiomercadolivre.repositorios.UsuarioRepository;
+import br.com.desafiomercadolivre.repositorios.*;
 import br.com.desafiomercadolivre.utils.UploaderSimulador;
+import br.com.desafiomercadolivre.utils.mail.ServicoDeEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +40,12 @@ public class ProdutoController {
 
     @Autowired
     private OpiniaoRepository opiniaoRepository;
+
+    @Autowired
+    private PerguntaRepository perguntaRepository;
+
+    @Autowired
+    private ServicoDeEmail servicoDeEmail;
 
 
     @PostMapping
@@ -76,6 +82,17 @@ public class ProdutoController {
         System.out.println(formulario.getDescricao());
         Opiniao novaOpiniao = formulario.converterParaOpiniao(usuarioLogado, possivelProduto);
         opiniaoRepository.save(novaOpiniao);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("{idProduto}/pergunta")
+    public ResponseEntity<?> cadastrarPergunta(@RequestBody @Valid PerguntaRequest formulario, @PathVariable Long idProduto,
+                                               @AuthenticationPrincipal Usuario usuario){
+
+        Produto produto = produtoRepository.getById(idProduto);
+        Pergunta pergunta = formulario.converterParaPergunta(produto, usuario);
+        perguntaRepository.save(pergunta);
+        servicoDeEmail.enviarEmail(pergunta, produto);
         return ResponseEntity.ok().build();
     }
 
