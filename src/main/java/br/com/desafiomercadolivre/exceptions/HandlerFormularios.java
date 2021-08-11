@@ -1,5 +1,6 @@
 package br.com.desafiomercadolivre.exceptions;
 
+import br.com.desafiomercadolivre.modelos.respostas.HandleGenericResponse;
 import br.com.desafiomercadolivre.modelos.respostas.HandlerResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,15 @@ public class HandlerFormularios {
 
         return ResponseEntity.badRequest().body(listaDeErros);
 
+    }
+
+    @ExceptionHandler(EstoqueInsuficiente.class)
+    public ResponseEntity<HandleGenericResponse> estoqueInsuficiente(EstoqueInsuficiente estoqueInsuficiente){
+        HandleGenericResponse handleGenericResponse =
+                new HandleGenericResponse(estoqueInsuficiente.getMessage(), estoqueInsuficiente.getClass().toString(),
+                        HttpStatus.BAD_REQUEST.value());
+
+        return ResponseEntity.badRequest().body(handleGenericResponse);
     }
 
 

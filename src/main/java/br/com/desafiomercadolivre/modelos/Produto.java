@@ -126,5 +126,14 @@ public class Produto {
         this.imagensDoProduto.addAll(imagens);
     }
 
+    public boolean verificaEstoque(Integer quantidadeInformada){
+        if(quantidadeInformada <= this.quantidadeDisponivel){
+            this.quantidadeDisponivel -= quantidadeInformada;
+            return true;
+        }
+
+        return false;
+    }
+
 
 }
