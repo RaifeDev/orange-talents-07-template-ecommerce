@@ -1,10 +1,16 @@
 package br.com.desafiomercadolivre.modelos;
 
+import br.com.desafiomercadolivre.modelos.formularios.PagSeguroRequest;
+import br.com.desafiomercadolivre.utils.gateway.RetornoGatewayPagamento;
+import org.springframework.util.Assert;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "tb_compras")
@@ -32,6 +38,8 @@ public class NovaCompra {
     @Enumerated(EnumType.STRING)
     private StatusCompra statusCompra;
 
+    @OneToMany(mappedBy = "compra", cascade = CascadeType.MERGE)
+    private Set<Transacao> transacoes = new HashSet<>();
 
     @Deprecated
     public NovaCompra(){
@@ -68,5 +76,30 @@ public class NovaCompra {
                 ", gatewayDePagamento=" + gatewayDePagamento +
                 ", statusCompra=" + statusCompra +
                 '}';
+    }
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void adicionaTransacao(RetornoGatewayPagamento formulario) {
+        Transacao novaTransacao = formulario.converterParaTransacao(this);
+
+        Assert.isTrue(!this.transacoes.contains(novaTransacao), "Já existe uma transação igual a essa sendo processada.");
+
+        Assert.isTrue(transacoesConcluidasComSucesso().isEmpty(), "Essa compra já foi concluida com sucesso.");
+        this.transacoes.add(novaTransacao);
+    }
+
+    private Set<Transacao> transacoesConcluidasComSucesso(){
+        Set<Transacao> transacoesConcluidasComSucesso = this.transacoes.stream()
+                .filter(Transacao::concluidaComSucesso).collect(Collectors.toSet());
+        Assert.isTrue(transacoesConcluidasComSucesso.size() <= 1,
+                "Deu ruim! tem mais de uma transação concluida para esta compra: " + this.id);
+        return transacoesConcluidasComSucesso;
+    }
+
+    public boolean processadaComSucesso() {
+        return !transacoesConcluidasComSucesso().isEmpty();
     }
 }
